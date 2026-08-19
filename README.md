@@ -55,20 +55,6 @@
 
 适合开发者或需要批量自动下载的用户。
 
-### 1. 安装依赖
-
-```bash
-# 克隆仓库
-git clone https://github.com/Surf565/qianwen-video-image-watermark-remover.git
-cd qianwen-video-image-watermark-remover
-
-# 安装依赖
-pip install -r qianwen_watermark_remover/requirements.txt
-
-
-python qianwen_watermark_remover/run.py "<千问分享链接>" [可选输出目录]
-
-
 ## ❓ 常见问题 (FAQ)
 
 - **Q: 为什么提取出的直链过了一段时间无法打开？**  

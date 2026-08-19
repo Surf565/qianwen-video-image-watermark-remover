@@ -58,9 +58,7 @@
 ## ⚙️ 工作原理
 通义千问在分享媒体资源时，后端接口返回的媒体数据里同时包含「渲染用水印版本」和「原始无水印版本」。本工具直接抓取无水印字段的真实地址：
 
-链接类型	图片无水印字段 ✅	视频无水印字段 ✅	带水印字段（已忽略） ❌
-Activity 活动分享页	images[].url	playInfo.url	images[].downloadUrl / playInfo.downloadUrl
-Chat 对话分享页	display_list[].image	display_list[].video	watermark_image / download_video
+链接类型	图片无水印字段 ✅	视频无水印字段 ✅	带水印字段（已忽略） 
 
 ## ❓ 常见问题 (FAQ)
 
@@ -77,8 +75,8 @@ Chat 对话分享页	display_list[].image	display_list[].video	watermark_image /
 
 ## 🤝 致谢与声明
 🤝 致谢与声明
-核心解析逻辑引用自 @hope0719。
-核心解析：感谢 @hope0719 提供的通义千问分享接口逆向与解析逻辑。
+
+核心解析：核心解析逻辑引用自 @hope0719，感谢 @hope0719 提供的通义千问分享接口逆向与解析逻辑。
 二次开发：本项目在其解析核心基础上，二次开发并封装了浏览器插件（Chrome/Edge 扩展），方便普通用户免代码一键提取。
 免责声明：本项目仅供个人学习与研究使用，请遵守相关服务协议。
 

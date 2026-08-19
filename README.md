@@ -1,89 +1,74 @@
-# 千问视频图片去水印（Qianwen Video & Image Watermark Remover）
+<div align="center">
 
-> 从千问（Qwen）的分享链接中直接提取**无水印原图与原视频**的轻量工具。
+# 🪄 千问 (Qwen) 视频图片无水印原图提取器
+### Qianwen Video & Image Watermark Remover
 
-## 这是什么
+一款轻量、极速的通义千问（Qwen）无水印媒体提取工具。  
+无需复杂的 AI 运算，直接从分享数据流中提取**无损原图**与**高清原视频**。
 
-千问在生成 / 分享图片或视频时，分享页面会同时返回「带水印」和「无水印」两个版本。本工具的作用就是绕过水印版本，直接抓取无水印原图的真实地址并下载到本地——**图片、视频都能去水印**，无需任何 AI 模型或人工处理。
+[![Chrome Extension](https://img.shields.io/badge/Chrome%20Extension-v1.0-blue?logo=googlechrome&logoColor=white)](https://github.com/Surf565/qianwen-video-image-watermark-remover/releases)
+[![Edge Extension](https://img.shields.io/badge/Edge%20Extension-Supported-green?logo=microsoftedge&logoColor=white)](https://github.com/Surf565/qianwen-video-image-watermark-remover/releases)
+[![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub Stars](https://img.shields.io/github/stars/Surf565/qianwen-video-image-watermark-remover?style=social)](https://github.com/Surf565/qianwen-video-image-watermark-remover)
 
-支持两种分享链接格式：
-- `activity.qianwen.com/r/...`（活动 / 外部分享页）
-- `www.qianwen.com/share/chat/...`（对话分享页）
+[🚀 浏览器插件安装](#-一浏览器插件使用推荐) • [💻 Python 命令行/代码调用](#-二python-版本使用) • [⚙️ 工作原理](#-工作原理) • [❓ 常见问题](#-常见问题-faq)
 
-## 工作原理（简述）
+</div>
 
-千问返回的媒体数据里同时带了两个字段，本工具自动识别链接类型，取「无水印」字段下载即可：
+---
 
-| 链接格式 | 图片无水印字段（用它） | 视频无水印字段（用它） | 带水印字段（别用） |
-|---|---|---|---|
-| activity 分享页 | `images[].url` | `playInfo.url` | `images[].downloadUrl` / `playInfo.downloadUrl` |
-| 对话分享页 | `display_list[].image` | `display_list[].video` | `watermark_image` / `download_video` |
+## ✨ 功能亮点
 
-## 安装
+- ⚡ **真正的 0 损原画质**：绕过前端渲染水印层，直取官方存储的原始文件。
+- 🎬 **全媒体格式支持**：同时支持通义千问生成的**高清图片**与**完整视频（MP4）**。
+- 🧩 **浏览器插件（零门槛）**：一键在千问网页端直接点击下载，无需任何编程基础。
+- 🐍 **Python CLI & API**：支持命令行批量解析、下载，支持作为模块嵌入自动化工作流。
+- 🔗 **多链接格式兼容**：
+  - 活动/外部分享页：`activity.qianwen.com/r/...`
+  - 对话分享页：`www.qianwen.com/share/chat/...`
+
+---
+
+## 📸 效果演示
+
+<!-- 提示：上传一张插件使用界面或前后对比图到 GitHub Issues/仓库，将下面的图片链接替换为您自己的图片 -->
+> | 带水印预览（官方页面） | 提取出的无水印原图/原视频 |
+> | :---: | :---: |
+> | *(网页端右下角带有官方水印)* | *(原始分辨率、无任何水印遮挡)* |
+
+---
+
+## 🧩 一、浏览器插件使用（推荐）
+
+适合绝大多数日常用户，无需安装 Python。
+
+### 1. 下载插件
+前往 [Releases 页面](https://github.com/Surf565/qianwen-video-image-watermark-remover/releases) 下载最新的 `qianwen-watermark-remover-extension.zip`，并解压到本地文件夹。
+
+### 2. 加载到浏览器（以 Chrome / Edge 为例）
+1. 打开浏览器扩展管理页：
+   - **Chrome**: `chrome://extensions/`
+   - **Edge**: `edge://extensions/`
+2. 打开右上角的 **「开发者模式」 (Developer mode)**。
+3. 点击左上角的 **「加载已解压的扩展程序」 (Load unpacked)**。
+4. 选择刚刚解压出来的插件文件夹即可。
+
+### 3. 使用方式
+- 打开任意通义千问分享链接，插件将自动检测媒体资源，并在页面提供一键下载无水印文件按钮。
+
+---
+
+## 💻 二、Python 版本使用
+
+适合开发者、批量下载需求或 Linux/服务器环境。
+
+### 1. 安装环境
 
 ```bash
-git clone https://github.com/hope0719/qianwen-video-image-watermark-remover.git
+# 克隆本仓库
+git clone https://github.com/Surf565/qianwen-video-image-watermark-remover.git
 cd qianwen-video-image-watermark-remover
+
+# 安装唯一轻量依赖
 pip install -r qianwen_watermark_remover/requirements.txt
-```
-
-依赖仅一个：`httpx`。
-
-## 使用
-
-命令行：
-
-```bash
-python qianwen_watermark_remover/run.py "<千问分享链接>" [输出目录]
-```
-
-示例：
-
-```bash
-# activity 链接（图片 + 视频混合）
-python qianwen_watermark_remover/run.py "https://activity.qianwen.com/r/ai-studio-mobile/qwen-external-share?shareId=xxx"
-
-# 对话分享链接，指定输出目录
-python qianwen_watermark_remover/run.py "https://www.qianwen.com/share/chat/abc123?biz_id=ai_qwen" ./my_output
-```
-
-作为库调用：
-
-```python
-import asyncio
-from qianwen_watermark_remover import parse_qianwen, download_media
-
-async def main():
-    result = await parse_qianwen("<千问分享链接>")  # 自动识别链接格式
-    print(f"标题: {result['title']}")
-    print(f"图片 {len(result['images'])} 张, 视频 {len(result['videos'])} 个")
-
-    # 直接拿 URL（不下载）
-    for img in result["images"]:
-        print(f"  图片 {img['width']}x{img['height']} | {img['url'][:80]}...")
-
-    # 下载到本地
-    download_media(result, output_dir="./output")
-
-asyncio.run(main())
-```
-
-## 目录结构
-
-```
-qianwen-video-image-watermark-remover/
-├── README.md                       # 本说明
-├── .gitignore
-└── qianwen_watermark_remover/
-    ├── qianwen_remover.py          # 核心解析模块（图片 + 视频，两种链接格式）
-    ├── run.py                      # 命令行入口
-    ├── requirements.txt            # 依赖
-    ├── __init__.py                 # 包导出
-    └── README.md                   # 模块级说明
-```
-
-## 注意事项
-
-- 无水印媒体 URL 带 `auth_key` 时效参数，过期后无法下载，请尽快保存。
-- 视频直接下载为 `.mp4`，无需额外转码（已是无水印源文件）。
-- 仅供学习交流使用，请遵守千问平台相关协议，勿用于侵权用途。

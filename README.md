@@ -55,6 +55,13 @@
 
 适合开发者或需要批量自动下载的用户。
 
+## ⚙️ 工作原理
+通义千问在分享媒体资源时，后端接口返回的媒体数据里同时包含「渲染用水印版本」和「原始无水印版本」。本工具直接抓取无水印字段的真实地址：
+
+链接类型	图片无水印字段 ✅	视频无水印字段 ✅	带水印字段（已忽略） ❌
+Activity 活动分享页	images[].url	playInfo.url	images[].downloadUrl / playInfo.downloadUrl
+Chat 对话分享页	display_list[].image	display_list[].video	watermark_image / download_video
+
 ## ❓ 常见问题 (FAQ)
 
 - **Q: 为什么提取出的直链过了一段时间无法打开？**  
